@@ -8,8 +8,10 @@ function App() {
   let post = '중계 우동 맛집';
   let [글제목, 글제목변경] = useState(['2.이름', '1.나이', '3.사는곳']);
   let logo = 'GEUNII BLOG';
-  let [따봉, 따봉변경] = useState(0);
+  let [따봉, 따봉변경] = useState([0,0,0]);
   let [버튼, 버튼변경] = useState('안녕');
+  let [modal,setModal] = useState(false);
+  let temp;
 
   [1, 2, 3].map(function (a) {
     return '12345'
@@ -47,13 +49,20 @@ function App() {
       {
         글제목.map(function (a,i) {
           return (
-            <div className="list">
-              <h4 onClick={()=>(Modal(true))}>{글제목[i]}</h4>
+            <div className="list" key={i}>
+              <h4 onClick={()=>(Modal(true))}>{글제목[i]} <span onClick={() => {
+                let copy = [...따봉]
+                copy[i]= copy[i]+1
+                따봉변경(copy)}}>💗</span>{따봉[i]}</h4>
               <p>8월 7일 발행</p>
             </div>)
         })
       }
-      
+      <button onClick={()=>(setModal(!modal))}>모달 창을 띄우자!</button>
+      {
+        modal ==true ? <Modal/> :null
+      }
+      <Modal></Modal>
     </div>
   );
 }
