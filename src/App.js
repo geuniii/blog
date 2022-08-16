@@ -8,9 +8,9 @@ function App() {
   let post = '중계 우동 맛집';
   let [글제목, 글제목변경] = useState(['2.이름', '1.나이', '3.사는곳']);
   let logo = 'GEUNII BLOG';
-  let [따봉, 따봉변경] = useState([0,0,0]);
+  let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [버튼, 버튼변경] = useState('안녕');
-  let [modal,setModal] = useState(false);
+  let [modal, setModal] = useState(false, false, false);
   let temp;
 
   [1, 2, 3].map(function (a) {
@@ -34,7 +34,7 @@ function App() {
         글제목변경(copy)
       }}>이거 누르면 글자 바뀌어</button>
       <p>{버튼}</p>
-      {/* <div className="li st">
+      {/* <div className="list">
         <h4>{글제목[0]} <span onClick={() => { 따봉변경(따봉 + 1) }}>💗</span> {따봉} </h4>
         <p>8월 7일 발행</p>
       </div>
@@ -47,37 +47,46 @@ function App() {
         <p>8월 7일 발행</p>
       </div> */}
       {
-        글제목.map(function (a,i) {
+        글제목.map(function (a, i) {
           return (
             <div className="list" key={i}>
-              <h4  onClick={()=>(setModal(!modal))}>{글제목[i]} <span onClick={() => {
+              <h4 onClick={() => {
+                setModal(!modal)
+                setTitle(i)
+              }}>{글제목[i]} <span onClick={() => {
                 let copy = [...따봉]
-                copy[i]= copy[i]+1
-                따봉변경(copy)}}>💗</span>{따봉[i]}</h4>
+                copy[i] = copy[i] + 1
+                따봉변경(copy)
+              }}>💗</span>{따봉[i]}</h4>
               <p>8월 7일 발행</p>
             </div>)
         })
       }
-      <button onClick={()=>(setModal(!modal))}>모달 창을 띄우자!</button>
+
+      <input onChange={(e)=>console.log(e.target.value)}/>
+      <select></select>
+
+      <button onClick={() => (setModal(!modal))}>모달 창을 띄우자!</button>
       {
-        modal ==true ? <Modal color = {'pink'} 글제목변경 = {글제목변경} 글제목 = {글제목}/> :null
+        modal == true ? <Modal color={'pink'} 글제목변경={글제목변경} 글제목={글제목} title={title} /> : null
       }
 
-      
+
     </div>
   );
 }
 
 function Modal(props) {
+  let [title, setTitle] = useState(0);
   return (
-    <div className="modal" style={{background :props.color}}>
-      <h4>{props.글제목[0]}</h4>
+    <div className="modal" style={{ background: props.color }}>
+      <h4>{props.글제목[title]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
-      <button onClick={()=>{
+      {/* <button onClick={()=>{
         let copy = [...props.글제목]
         copy[0] = "2. 내 이름이 뭐게!"
-        props.글제목변경(copy)}}>글수정</button>
+        props.글제목변경(copy)}}>글수정</button> */}
     </div>
   )
 }
