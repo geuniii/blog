@@ -11,6 +11,9 @@ function App() {
   let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [버튼, 버튼변경] = useState('안녕');
   let [modal, setModal] = useState(false, false, false);
+  let [title, setTitle] = useState(0);
+  let [입력값,입력값변경] = useState('');
+
   let temp;
 
   [1, 2, 3].map(function (a) {
@@ -53,23 +56,37 @@ function App() {
               <h4 onClick={() => {
                 setModal(!modal)
                 setTitle(i)
-              }}>{글제목[i]} <span onClick={() => {
+              }}>{글제목[i]} <span onClick={(e) => {
+                e.stopPropagation();
                 let copy = [...따봉]
                 copy[i] = copy[i] + 1
                 따봉변경(copy)
               }}>💗</span>{따봉[i]}</h4>
               <p>8월 7일 발행</p>
+              <button onClick={()=>{
+                글제목.splice(i,1);
+                따봉.splice(i,1);
+                console.log(글제목);
+              }}>글삭제</button>
             </div>)
         })
       }
 
-      <input onChange={(e)=>console.log(e.target.value)}/>
-      <select></select>
+      <input onChange={(e)=>{
+        입력값변경(e.target.value);
+        console.log(입력값);
+        }}/>
 
       <button onClick={() => (setModal(!modal))}>모달 창을 띄우자!</button>
       {
         modal == true ? <Modal color={'pink'} 글제목변경={글제목변경} 글제목={글제목} title={title} /> : null
       }
+
+      <button onClick={()=>{
+        let copy = [...글제목];
+        copy[copy.length] = (copy.length+1)+".추가된 글";
+        글제목변경(copy);
+      }}>글추가</button>
 
 
     </div>
@@ -77,10 +94,9 @@ function App() {
 }
 
 function Modal(props) {
-  let [title, setTitle] = useState(0);
   return (
     <div className="modal" style={{ background: props.color }}>
-      <h4>{props.글제목[title]}</h4>
+      <h4>{props.글제목[props.title]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       {/* <button onClick={()=>{
